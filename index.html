@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bankroll Control</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand h1 {
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .brand p {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .topbar h2 {
+            font-size: 22px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            background: #111827;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .card .title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+        }
+
+        .card .value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .card .detail {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .positive {
+            color: #16803c !important;
+        }
+
+        .negative {
+            color: #c62828 !important;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .chart-box {
+            height: 320px;
+        }
+
+        .performance {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .performance-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .performance-item span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .performance-item strong {
+            font-size: 20px;
+        }
+
+        .analytics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            padding: 12px 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #f0f1f3;
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .green {
+            background: #dcfce7;
+            color: #16803c;
+        }
+
+        .red {
+            background: #fee2e2;
+            color: #c62828;
+        }
+
+        .footer {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .analytics {
+                grid-template-columns: 1fr;
+            }
+
+            .performance {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .performance {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .header {
+                padding: 18px 5%;
+            }
+
+            .container {
+                width: 94%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="brand">
+        <h1>BANKROLL CONTROL</h1>
+        <p>Gestão e análise de banca</p>
+    </div>
+
+    <span>Dashboard</span>
+</header>
+
+<main class="container">
+
+    <div class="topbar">
+        <h2>Visão Geral</h2>
+        <button class="btn">+ NOVA APOSTA</button>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="title">Banca Atual</div>
+            <div class="value">R$ 92,74</div>
+            <div class="detail positive">▲ 3,04% desde o início</div>
+        </div>
+
+        <div class="card">
+            <div class="title">Lucro / Prejuízo</div>
+            <div class="value positive">+ R$ 2,74</div>
+            <div class="detail">Banca inicial: R$ 90,00</div>
+        </div>
+
+        <div class="card">
+            <div class="title">ROI</div>
+            <div class="value positive">19,57%</div>
+            <div class="detail">R$ 14,00 apostados</div>
+        </div>
+
+        <div class="card">
+            <div class="title">Taxa de Acerto</div>
+            <div class="value">50,0%</div>
+            <div class="detail">1 green em 2 apostas</div>
+        </div>
+
+    </div>
+
+    <section class="section">
+
+        <h3>Evolução da Banca</h3>
+
+        <div class="chart-box">
+            <canvas id="bankrollChart"></canvas>
+        </div>
+
+    </section>
+
+    <section class="section">
+
+        <h3>Desempenho</h3>
+
+        <div class="performance">
+
+            <div class="performance-item">
+                <span>HOJE</span>
+                <strong class="positive">+3,04%</strong>
+            </div>
+
+            <div class="performance-item">
+                <span>SEMANA</span>
+                <strong class="positive">+3,04%</strong>
+            </div>
+
+            <div class="performance-item">
+                <span>MÊS</span>
+                <strong class="positive">+3,04%</strong>
+            </div>
+
+            <div class="performance-item">
+                <span>DESDE O INÍCIO</span>
+                <strong class="positive">+3,04%</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="analytics">
+
+        <section class="section">
+            <h3>Resultado por Campeonato</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Campeonato</th>
+                        <th>Apostas</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Champions</td>
+                        <td>1</td>
+                        <td class="positive">+ R$ 7,74</td>
+                    </tr>
+
+                    <tr>
+                        <td>Brasileirão</td>
+                        <td>1</td>
+                        <td class="negative">- R$ 5,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h3>Resultado por Mercado</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mercado</th>
+                        <th>Apostas</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Vitória</td>
+                        <td>1</td>
+                        <td class="positive">+ R$ 7,74</td>
+                    </tr>
+
+                    <tr>
+                        <td>Mais de 1,5 gols</td>
+                        <td>1</td>
+                        <td class="negative">- R$ 5,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <section class="section">
+
+        <h3>Apostas Recentes</h3>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Esporte</th>
+                        <th>Campeonato</th>
+                        <th>Evento</th>
+                        <th>Mercado</th>
+                        <th>Odd</th>
+                        <th>Stake</th>
+                        <th>Resultado</th>
+                        <th>Lucro</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>16/09/2026</td>
+                        <td>Futebol</td>
+                        <td>Champions</td>
+                        <td>Time A x Time B</td>
+                        <td>Vitória</td>
+                        <td>1,86</td>
+                        <td>R$ 9,00</td>
+                        <td><span class="badge green">GREEN</span></td>
+                        <td class="positive">+ R$ 7,74</td>
+                    </tr>
+
+                    <tr>
+                        <td>16/09/2026</td>
+                        <td>Futebol</td>
+                        <td>Brasileirão</td>
+                        <td>Time C x Time D</td>
+                        <td>Mais de 1,5 gols</td>
+                        <td>2,00</td>
+                        <td>R$ 5,00</td>
+                        <td><span class="badge red">RED</span></td>
+                        <td class="negative">- R$ 5,00</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div class="footer">
+    Bankroll Control • Dashboard de Gestão
+</div>
+
+<script>
+
+    const ctx = document.getElementById('bankrollChart');
+
+    new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+            labels: [
+                'Banca Inicial',
+                'Aposta 1',
+                'Aposta 2'
+            ],
+
+            datasets: [{
+                label: 'Banca',
+                data: [90, 97.74, 92.74],
+                borderWidth: 3,
+                tension: 0.35,
+                fill: true
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+
+            scales: {
+
+                y: {
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toFixed(2);
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
