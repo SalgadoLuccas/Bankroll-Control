@@ -7,6 +7,7 @@
     <title>Bankroll Control</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         * {
@@ -499,6 +500,35 @@
 
     });
 
+</script>
+
+    <script>
+    // ==========================================
+    // CONEXÃO COM O SUPABASE
+    // ==========================================
+
+    const SUPABASE_URL = 'https://tbmyolbbyhtqhhzsqidb.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_LyM-qTHf5nU0dyxl6InEmA_EehVu27f';
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+    async function testarConexao() {
+        const { data, error } = await supabaseClient
+            .from('apostas')
+            .select('*');
+
+        if (error) {
+            console.error('Erro na conexão com Supabase:', error);
+        } else {
+            console.log('Supabase conectado com sucesso!');
+            console.log('Apostas encontradas:', data);
+        }
+    }
+
+    testarConexao();
 </script>
 
 </body>
