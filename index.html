@@ -811,15 +811,14 @@ textarea{
 
 const BANK = 100;
 
-const URL =
+const SUPABASE_URL =
 'https://tbmyolbbyhtqhhzsqidb.supabase.co';
 
 const KEY =
-console.log("URL TESTE:", URL, "TAMANHO:", URL.length);
 'sb_publishable_LyM-qTHf5nU0dyxl6InEmA_EehVu27f';
 
 const db =
-supabase.createClient(URL, KEY);
+supabase.createClient(SUPABASE_URL, KEY);
 
 let A = [];
 let M = [];
