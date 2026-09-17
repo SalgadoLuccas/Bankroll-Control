@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Bankroll Control</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -21,9 +22,7 @@
     --a:#f59e0b;
 }
 
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -89,8 +88,7 @@ header p{
     margin:20px 0;
 }
 
-.card,
-.section{
+.card,.section{
     background:var(--p);
     border:1px solid var(--line);
     border-radius:14px;
@@ -141,8 +139,7 @@ header p{
     height:300px;
 }
 
-.perf,
-.two{
+.perf,.two{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:12px;
@@ -178,8 +175,7 @@ table{
     min-width:650px;
 }
 
-th,
-td{
+th,td{
     text-align:left;
     padding:11px 9px;
     border-bottom:1px solid #222d40;
@@ -285,6 +281,10 @@ th{
     grid-column:1/-1;
 }
 
+.hidden{
+    display:none;
+}
+
 .field label{
     display:block;
     color:var(--mut);
@@ -332,33 +332,31 @@ textarea{
 
 @media(max-width:1000px){
     .cards{
-        grid-template-columns:repeat(3,1fr);
+        grid-template-columns:repeat(3,1fr)
     }
 }
 
 @media(max-width:750px){
-    .cards,
-    .two{
-        grid-template-columns:1fr 1fr;
+    .cards,.two{
+        grid-template-columns:1fr 1fr
     }
 
     .perf{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:1fr 1fr
     }
 }
 
 @media(max-width:520px){
-    .cards,
-    .two,
-    .form{
-        grid-template-columns:1fr;
+    .cards,.two,.form{
+        grid-template-columns:1fr
     }
 
     .field.full{
-        grid-column:auto;
+        grid-column:auto
     }
 }
 </style>
+
 </head>
 
 <body>
@@ -371,6 +369,7 @@ textarea{
 <main class="wrap">
 
 <div class="top">
+
     <h2>Visão Geral</h2>
 
     <div class="actions">
@@ -382,6 +381,7 @@ textarea{
             + NOVA APOSTA
         </button>
     </div>
+
 </div>
 
 <div class="cards">
@@ -419,10 +419,13 @@ textarea{
 </div>
 
 <section class="section">
+
     <h3>Evolução da Banca</h3>
+
     <div class="chart">
         <canvas id="line"></canvas>
     </div>
+
 </section>
 
 <section class="section">
@@ -586,116 +589,171 @@ textarea{
 
 <div class="modal">
 
-    <div class="mh">
-        <h3 id="betTitle">Nova Aposta</h3>
+<div class="mh">
 
-        <button class="x" data-x="betModal">
-            ×
-        </button>
+    <h3 id="betTitle">Nova Aposta</h3>
+
+    <button class="x" data-x="betModal">
+        ×
+    </button>
+
+</div>
+
+<form id="betForm">
+
+<input type="hidden" id="bid">
+
+<div class="form">
+
+<div class="field">
+
+    <label>Data</label>
+
+    <input id="data" type="date" required>
+
+</div>
+
+<div class="field">
+
+    <label>Hora</label>
+
+    <input id="hora" type="time">
+
+</div>
+
+<div class="field">
+
+    <label>Esporte</label>
+
+    <input id="esporte" required>
+
+</div>
+
+<div class="field">
+
+    <label>Campeonato</label>
+
+    <input id="campeonato" required>
+
+</div>
+
+<div class="field full">
+
+    <label>Evento</label>
+
+    <input id="evento" required>
+
+</div>
+
+<div class="field full">
+
+    <label>Mercado</label>
+
+    <input id="mercado" required>
+
+</div>
+
+<div class="field">
+
+    <label>Odd</label>
+
+    <input
+        id="odd"
+        type="number"
+        step=".01"
+        min="1.01"
+        required
+    >
+
+</div>
+
+<div class="field">
+
+    <label>Stake (R$)</label>
+
+    <input
+        id="stake"
+        type="number"
+        step=".01"
+        min=".01"
+        required
+    >
+
+</div>
+
+<div class="field full">
+
+    <label>Resultado</label>
+
+    <select id="resultado">
+
+        <option>PENDENTE</option>
+        <option>GREEN</option>
+        <option>RED</option>
+        <option>MEIO GREEN</option>
+        <option>MEIO RED</option>
+        <option>DEVOLVIDA</option>
+        <option>CASHOUT</option>
+
+    </select>
+
+</div>
+
+
+<!-- CAMPO EXCLUSIVO DO CASHOUT -->
+
+<div
+    class="field full hidden"
+    id="cashoutField"
+>
+
+    <label>
+        Valor recebido no Cashout (R$)
+    </label>
+
+    <input
+        id="retorno_manual"
+        type="number"
+        step=".01"
+        min="0"
+        placeholder="Ex.: 27,00"
+    >
+
+    <div class="detail">
+        Informe o valor total devolvido pela casa no cashout.
     </div>
 
-    <form id="betForm">
+</div>
 
-        <input type="hidden" id="bid">
 
-        <div class="form">
+<div class="field full">
 
-            <div class="field">
-                <label>Data</label>
-                <input id="data" type="date" required>
-            </div>
+    <label>Observação</label>
 
-            <div class="field">
-                <label>Hora</label>
-                <input id="hora" type="time">
-            </div>
+    <textarea id="obs"></textarea>
 
-            <div class="field">
-                <label>Esporte</label>
-                <input id="esporte" required>
-            </div>
+</div>
 
-            <div class="field">
-                <label>Campeonato</label>
-                <input id="campeonato" required>
-            </div>
+</div>
 
-            <div class="field full">
-                <label>Evento</label>
-                <input id="evento" required>
-            </div>
 
-            <div class="field full">
-                <label>Mercado</label>
-                <input id="mercado" required>
-            </div>
+<div class="ma">
 
-            <div class="field">
-                <label>Odd</label>
-                <input
-                    id="odd"
-                    type="number"
-                    step=".01"
-                    min="1.01"
-                    required
-                >
-            </div>
+    <button
+        type="button"
+        class="btn alt"
+        data-x="betModal"
+    >
+        Cancelar
+    </button>
 
-            <div class="field">
-                <label>Stake (R$)</label>
-                <input
-                    id="stake"
-                    type="number"
-                    step=".01"
-                    min=".01"
-                    required
-                >
-            </div>
+    <button class="btn">
+        Salvar aposta
+    </button>
 
-            <div class="field full">
+</div>
 
-                <label>Resultado</label>
-
-                <select id="resultado">
-
-                    <option>PENDENTE</option>
-                    <option>GREEN</option>
-                    <option>RED</option>
-                    <option>MEIO GREEN</option>
-                    <option>MEIO RED</option>
-                    <option>VOID</option>
-
-                </select>
-
-            </div>
-
-            <div class="field full">
-
-                <label>Observação</label>
-
-                <textarea id="obs"></textarea>
-
-            </div>
-
-        </div>
-
-        <div class="ma">
-
-            <button
-                type="button"
-                class="btn alt"
-                data-x="betModal"
-            >
-                Cancelar
-            </button>
-
-            <button class="btn">
-                Salvar aposta
-            </button>
-
-        </div>
-
-    </form>
+</form>
 
 </div>
 
@@ -708,101 +766,105 @@ textarea{
 
 <div class="modal">
 
-    <div class="mh">
+<div class="mh">
 
-        <h3>Movimentar Banca</h3>
+    <h3>Movimentar Banca</h3>
 
-        <button class="x" data-x="movModal">
-            ×
-        </button>
+    <button class="x" data-x="movModal">
+        ×
+    </button>
 
-    </div>
+</div>
 
-    <form id="movForm">
+<form id="movForm">
 
-        <div class="form">
+<div class="form">
 
-            <div class="field">
+<div class="field">
 
-                <label>Tipo</label>
+    <label>Tipo</label>
 
-                <select id="mtipo">
-                    <option>SAQUE</option>
-                    <option value="DEPOSITO">
-                        DEPÓSITO
-                    </option>
-                </select>
+    <select id="mtipo">
 
-            </div>
+        <option>SAQUE</option>
 
-            <div class="field">
+        <option value="DEPOSITO">
+            DEPÓSITO
+        </option>
 
-                <label>Valor (R$)</label>
+    </select>
 
-                <input
-                    id="mvalor"
-                    type="number"
-                    step=".01"
-                    min=".01"
-                    required
-                >
+</div>
 
-            </div>
+<div class="field">
 
-            <div class="field">
+    <label>Valor (R$)</label>
 
-                <label>Data</label>
+    <input
+        id="mvalor"
+        type="number"
+        step=".01"
+        min=".01"
+        required
+    >
 
-                <input
-                    id="mdata"
-                    type="date"
-                    required
-                >
+</div>
 
-            </div>
+<div class="field">
 
-            <div class="field">
+    <label>Data</label>
 
-                <label>Hora</label>
+    <input
+        id="mdata"
+        type="date"
+        required
+    >
 
-                <input
-                    id="mhora"
-                    type="time"
-                >
+</div>
 
-            </div>
+<div class="field">
 
-            <div class="field full">
+    <label>Hora</label>
 
-                <label>Observação</label>
+    <input
+        id="mhora"
+        type="time"
+    >
 
-                <textarea id="mobs"></textarea>
+</div>
 
-            </div>
+<div class="field full">
 
-        </div>
+    <label>Observação</label>
 
-        <div class="ma">
-
-            <button
-                type="button"
-                class="btn alt"
-                data-x="movModal"
-            >
-                Cancelar
-            </button>
-
-            <button class="btn">
-                Confirmar
-            </button>
-
-        </div>
-
-    </form>
+    <textarea id="mobs"></textarea>
 
 </div>
 
 </div>
+
+<div class="ma">
+
+    <button
+        type="button"
+        class="btn alt"
+        data-x="movModal"
+    >
+        Cancelar
+    </button>
+
+    <button class="btn">
+        Confirmar
+    </button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
 
 <div class="toast" id="toast"></div>
 
@@ -818,7 +880,11 @@ const KEY =
 'sb_publishable_LyM-qTHf5nU0dyxl6InEmA_EehVu27f';
 
 const db =
-supabase.createClient(SUPABASE_URL, KEY);
+supabase.createClient(
+    SUPABASE_URL,
+    KEY
+);
+
 
 let A = [];
 let M = [];
@@ -828,34 +894,39 @@ let pc;
 
 
 const n = v =>
-Number(v) || 0;
+    Number(v) || 0;
 
 
 const money = v =>
-new Intl.NumberFormat(
-    'pt-BR',
-    {
-        style:'currency',
-        currency:'BRL'
-    }
-).format(n(v));
+    new Intl.NumberFormat(
+        'pt-BR',
+        {
+            style:'currency',
+            currency:'BRL'
+        }
+    ).format(n(v));
 
 
 const p = v =>
-n(v).toLocaleString(
-    'pt-BR',
-    {
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    }
-) + '%';
+    n(v).toLocaleString(
+        'pt-BR',
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    ) + '%';
 
 
 const br = d =>
-d
-? d.split('-').reverse().join('/')
-: '—';
+    d
+    ? d.split('-').reverse().join('/')
+    : '—';
 
+
+
+/* =========================
+   RESULTADOS LIQUIDADOS
+========================= */
 
 const settled = a =>
 [
@@ -863,47 +934,81 @@ const settled = a =>
     'RED',
     'MEIO GREEN',
     'MEIO RED',
-    'VOID'
-].includes(a.resultado);
+    'DEVOLVIDA',
+    'VOID',
+    'CASHOUT'
+]
+.includes(a.resultado);
 
+
+
+/* =========================
+   CÁLCULO DO RESULTADO
+========================= */
 
 function profit(a){
 
     let s = n(a.stake);
+
     let o = n(a.odd);
 
+
     if(a.resultado === 'GREEN'){
+
         return s * (o - 1);
+
     }
+
 
     if(a.resultado === 'RED'){
+
         return -s;
+
     }
+
 
     if(a.resultado === 'MEIO GREEN'){
-        return s / 2 * (o - 1);
+
+        return (s / 2) * (o - 1);
+
     }
+
 
     if(a.resultado === 'MEIO RED'){
-        return -s / 2;
+
+        return -(s / 2);
+
     }
 
+
+    if(a.resultado === 'CASHOUT'){
+
+        return n(a.retorno_manual) - s;
+
+    }
+
+
+    /*
+    DEVOLVIDA ou registros antigos
+    salvos como VOID = lucro zero.
+    */
+
     return 0;
+
 }
+
 
 
 function cls(v){
 
-    if(v > 0){
-        return 'pos';
-    }
+    return v > 0
+        ? 'pos'
+        : v < 0
+        ? 'neg'
+        : '';
 
-    if(v < 0){
-        return 'neg';
-    }
-
-    return '';
 }
+
 
 
 function esc(s){
@@ -919,45 +1024,64 @@ function esc(s){
             "'":'&#39;'
         }[x])
     );
+
 }
 
+
+
+/* =========================
+   BADGES
+========================= */
 
 function badge(r){
 
-    let classe = 'other';
+    /*
+    Caso exista algum VOID antigo
+    na base, será exibido na tela
+    como DEVOLVIDA.
+    */
 
-    if(r === 'GREEN'){
-        classe = 'green';
-    }
+    let label =
+        r === 'VOID'
+        ? 'DEVOLVIDA'
+        : r;
 
-    if(r === 'RED'){
-        classe = 'red';
-    }
-
-    if(r === 'PENDENTE'){
-        classe = 'pending';
-    }
 
     return `
-        <span class="badge ${classe}">
-            ${r}
-        </span>
+    <span class="badge ${
+        r === 'GREEN'
+        ? 'green'
+        : r === 'RED'
+        ? 'red'
+        : r === 'PENDENTE'
+        ? 'pending'
+        : 'other'
+    }">
+        ${label}
+    </span>
     `;
+
 }
 
+
+
+/* =========================
+   DATA E HORA
+========================= */
 
 function localDate(){
 
     let d = new Date();
 
     let z =
-    d.getTimezoneOffset();
+        d.getTimezoneOffset();
 
     return new Date(
         d - z * 60000
     )
     .toISOString()
     .slice(0,10);
+
 }
 
 
@@ -966,8 +1090,14 @@ function localTime(){
     return new Date()
     .toTimeString()
     .slice(0,5);
+
 }
 
+
+
+/* =========================
+   MODAIS
+========================= */
 
 function show(id){
 
@@ -975,6 +1105,7 @@ function show(id){
     .getElementById(id)
     .classList
     .add('open');
+
 }
 
 
@@ -984,24 +1115,37 @@ function hide(id){
     .getElementById(id)
     .classList
     .remove('open');
+
 }
 
+
+
+/* =========================
+   MENSAGEM
+========================= */
 
 function toast(s){
 
     let e =
-    document.getElementById('toast');
+        document.getElementById('toast');
 
     e.textContent = s;
 
     e.classList.add('on');
 
     setTimeout(
-        () => e.classList.remove('on'),
+        () =>
+        e.classList.remove('on'),
         2500
     );
+
 }
 
+
+
+/* =========================
+   CARREGAR SUPABASE
+========================= */
 
 async function load(){
 
@@ -1034,20 +1178,28 @@ async function load(){
         return toast(
             'Erro ao carregar dados'
         );
+
     }
 
 
     A = a.data || [];
+
     M = m.data || [];
 
     render();
+
 }
 
+
+
+/* =========================
+   COR POSITIVO / NEGATIVO
+========================= */
 
 function color(id,v){
 
     let e =
-    document.getElementById(id);
+        document.getElementById(id);
 
     e.classList.remove(
         'pos',
@@ -1055,154 +1207,218 @@ function color(id,v){
     );
 
     if(v){
+
         e.classList.add(
             cls(v)
         );
+
     }
+
 }
 
+
+
+/* =========================
+   DASHBOARD
+========================= */
 
 function render(){
 
     let L =
-    A.filter(settled);
+        A.filter(settled);
 
 
     let lu =
-    L.reduce(
-        (s,a) =>
-        s + profit(a),
-        0
-    );
+        L.reduce(
+            (s,a) =>
+            s + profit(a),
+            0
+        );
 
+
+    /*
+    Para ROI:
+    DEVOLVIDA não entra
+    como valor apostado efetivo.
+    */
 
     let stake =
-    L
-    .filter(
-        a =>
-        a.resultado !== 'VOID'
-    )
-    .reduce(
-        (s,a) =>
-        s + n(a.stake),
-        0
-    );
+        L
+        .filter(
+            a =>
+            ![
+                'DEVOLVIDA',
+                'VOID'
+            ]
+            .includes(a.resultado)
+        )
+        .reduce(
+            (s,a) =>
+            s + n(a.stake),
+            0
+        );
 
 
     let dep =
-    M
-    .filter(
-        x =>
-        x.tipo === 'DEPOSITO'
-    )
-    .reduce(
-        (s,x) =>
-        s + n(x.valor),
-        0
-    );
+        M
+        .filter(
+            x =>
+            x.tipo === 'DEPOSITO'
+        )
+        .reduce(
+            (s,x) =>
+            s + n(x.valor),
+            0
+        );
 
 
     let saq =
-    M
-    .filter(
-        x =>
-        x.tipo === 'SAQUE'
-    )
-    .reduce(
-        (s,x) =>
-        s + n(x.valor),
-        0
-    );
+        M
+        .filter(
+            x =>
+            x.tipo === 'SAQUE'
+        )
+        .reduce(
+            (s,x) =>
+            s + n(x.valor),
+            0
+        );
 
 
     let bank =
-    BANK
-    + lu
-    + dep
-    - saq;
+        BANK
+        + lu
+        + dep
+        - saq;
 
 
     let roi =
-    stake
-    ? lu / stake * 100
-    : 0;
+        stake
+        ? lu / stake * 100
+        : 0;
 
+
+    /*
+    Taxa de acerto:
+    somente resultados que
+    realmente representam
+    acerto ou erro.
+
+    Cashout e Devolvida
+    não entram.
+    */
 
     let dec =
-    L.filter(
-        a =>
-        a.resultado !== 'VOID'
-    );
+        L.filter(
+            a =>
+            [
+                'GREEN',
+                'RED',
+                'MEIO GREEN',
+                'MEIO RED'
+            ]
+            .includes(a.resultado)
+        );
 
 
     let hits =
-    dec.filter(
-        a =>
-        [
-            'GREEN',
-            'MEIO GREEN'
-        ]
-        .includes(a.resultado)
-    ).length;
+        dec.filter(
+            a =>
+            [
+                'GREEN',
+                'MEIO GREEN'
+            ]
+            .includes(a.resultado)
+        )
+        .length;
 
 
     let hr =
-    dec.length
-    ? hits / dec.length * 100
-    : 0;
+        dec.length
+        ? hits / dec.length * 100
+        : 0;
 
+
+    /*
+    Odd média somente
+    dos GREEN completos.
+    */
 
     let g =
-    A.filter(
-        a =>
-        a.resultado === 'GREEN'
-    );
+        A.filter(
+            a =>
+            a.resultado === 'GREEN'
+        );
 
 
     let avg =
-    g.length
-    ? g.reduce(
-        (s,a) =>
-        s + n(a.odd),
-        0
-      ) / g.length
-    : null;
+        g.length
+        ?
+        g.reduce(
+            (s,a) =>
+            s + n(a.odd),
+            0
+        )
+        / g.length
+        :
+        null;
 
 
     let growth =
-    (bank - BANK)
-    / BANK
-    * 100;
+        (bank - BANK)
+        / BANK
+        * 100;
 
+
+
+    /* BANCA */
 
     document
     .getElementById('banca')
     .textContent =
-    money(bank);
+        money(bank);
 
 
-    let growthEl =
-    document.getElementById(
-        'growth'
-    );
+
+    /* CRESCIMENTO */
+
+    const growthEl =
+        document
+        .getElementById('growth');
 
 
     growthEl.textContent =
-    (growth >= 0 ? '▲ ' : '▼ ')
-    + p(Math.abs(growth))
-    + ' desde o início';
+        (
+            growth >= 0
+            ? '▲ '
+            : '▼ '
+        )
+        +
+        p(
+            Math.abs(growth)
+        )
+        +
+        ' desde o início';
 
 
     growthEl.className =
-    'detail '
-    + cls(growth);
+        'detail '
+        + cls(growth);
 
+
+
+    /* LUCRO */
 
     document
     .getElementById('lucro')
     .textContent =
-    (lu > 0 ? '+ ' : '')
-    + money(lu);
+        (
+            lu > 0
+            ? '+ '
+            : ''
+        )
+        +
+        money(lu);
 
 
     color(
@@ -1211,14 +1427,13 @@ function render(){
     );
 
 
-    let roiEl =
-    document.getElementById(
-        'roi'
-    );
 
+    /* ROI */
 
-    roiEl.textContent =
-    p(roi);
+    document
+    .getElementById('roi')
+    .textContent =
+        p(roi);
 
 
     color(
@@ -1230,44 +1445,61 @@ function render(){
     document
     .getElementById('staked')
     .textContent =
-    money(stake)
-    + ' apostados';
+        money(stake)
+        +
+        ' apostados';
 
+
+
+    /* TAXA DE ACERTO */
 
     document
     .getElementById('hit')
     .textContent =
-    hr.toLocaleString(
-        'pt-BR',
-        {
-            minimumFractionDigits:1,
-            maximumFractionDigits:1
-        }
-    )
-    + '%';
+        hr.toLocaleString(
+            'pt-BR',
+            {
+                minimumFractionDigits:1,
+                maximumFractionDigits:1
+            }
+        )
+        +
+        '%';
 
 
     document
     .getElementById('hitd')
     .textContent =
-    hits
-    + ' acertos em '
-    + dec.length
-    + ' liquidadas';
+        hits
+        +
+        ' acertos em '
+        +
+        dec.length
+        +
+        ' liquidadas';
 
 
-    document
-    .getElementById('avg')
-    .textContent =
-    avg
-    ? avg.toLocaleString(
-        'pt-BR',
-        {
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        }
-      )
-    : '—';
+
+    /* ODD MÉDIA */
+
+    const avgEl =
+        document
+        .getElementById('avg');
+
+
+    avgEl.textContent =
+        avg
+        ?
+        avg.toLocaleString(
+            'pt-BR',
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
+        )
+        :
+        '—';
+
 
 
     period(growth);
@@ -1287,13 +1519,19 @@ function render(){
     movs();
 
     charts();
+
 }
 
+
+
+/* =========================
+   INÍCIO DOS PERÍODOS
+========================= */
 
 function start(t){
 
     let d =
-    new Date();
+        new Date();
 
     d.setHours(
         0,0,0,0
@@ -1303,11 +1541,13 @@ function start(t){
     if(t === 'w'){
 
         let k =
-        (d.getDay() + 6) % 7;
+            (d.getDay() + 6)
+            % 7;
 
         d.setDate(
             d.getDate() - k
         );
+
     }
 
 
@@ -1319,12 +1559,19 @@ function start(t){
             d.getMonth(),
             1
         );
+
     }
 
 
     return d;
+
 }
 
+
+
+/* =========================
+   DESEMPENHO
+========================= */
 
 function period(total){
 
@@ -1337,37 +1584,46 @@ function period(total){
         ([id,t]) => {
 
             let x =
-            A
-            .filter(
-                a =>
-                settled(a)
-                &&
-                new Date(
-                    a.data
-                    + 'T00:00:00'
+                A
+                .filter(
+                    a =>
+                    settled(a)
+                    &&
+                    new Date(
+                        a.data
+                        +
+                        'T00:00:00'
+                    )
+                    >= start(t)
                 )
-                >= start(t)
-            )
-            .reduce(
-                (s,a) =>
-                s + profit(a),
-                0
-            )
-            / BANK
-            * 100;
+                .reduce(
+                    (s,a) =>
+                    s + profit(a),
+                    0
+                )
+                /
+                BANK
+                *
+                100;
 
 
             document
             .getElementById(id)
             .textContent =
-            (x > 0 ? '+' : '')
-            + p(x);
+                (
+                    x > 0
+                    ? '+'
+                    : ''
+                )
+                +
+                p(x);
 
 
             color(
                 id,
                 x
             );
+
         }
     );
 
@@ -1375,16 +1631,27 @@ function period(total){
     document
     .getElementById('dt')
     .textContent =
-    (total > 0 ? '+' : '')
-    + p(total);
+        (
+            total > 0
+            ? '+'
+            : ''
+        )
+        +
+        p(total);
 
 
     color(
         'dt',
         total
     );
+
 }
 
+
+
+/* =========================
+   AGRUPAMENTO
+========================= */
 
 function group(id,key){
 
@@ -1397,8 +1664,9 @@ function group(id,key){
         a => {
 
             let k =
-            a[key]
-            || 'Não informado';
+                a[key]
+                ||
+                'Não informado';
 
 
             if(!o[k]){
@@ -1407,42 +1675,62 @@ function group(id,key){
                     c:0,
                     l:0
                 };
+
             }
 
 
             o[k].c++;
 
             o[k].l +=
-            profit(a);
+                profit(a);
+
         }
     );
 
 
     let e =
-    document.getElementById(id);
+        document
+        .getElementById(id);
 
 
     let r =
-    Object.entries(o);
+        Object.entries(o);
 
 
     e.innerHTML =
-    r.length
-
-    ? r.map(
-        ([k,v]) => `
+        r.length
+        ?
+        r.map(
+            ([k,v]) =>
+            `
             <tr>
-                <td>${esc(k)}</td>
-                <td>${v.c}</td>
-                <td class="${cls(v.l)}">
-                    ${v.l > 0 ? '+ ' : ''}
-                    ${money(v.l)}
-                </td>
-            </tr>
-        `
-      ).join('')
 
-    : `
+                <td>
+                    ${esc(k)}
+                </td>
+
+                <td>
+                    ${v.c}
+                </td>
+
+                <td class="${cls(v.l)}">
+
+                    ${
+                        v.l > 0
+                        ? '+ '
+                        : ''
+                    }
+
+                    ${money(v.l)}
+
+                </td>
+
+            </tr>
+            `
+        )
+        .join('')
+        :
+        `
         <tr>
             <td
                 colspan="3"
@@ -1451,173 +1739,202 @@ function group(id,key){
                 Sem dados.
             </td>
         </tr>
-      `;
+        `;
+
 }
 
+
+
+/* =========================
+   APOSTAS RECENTES
+========================= */
 
 function bets(){
 
     let r =
-    [...A]
-    .sort(
-        (a,b) =>
-        b.id - a.id
-    )
-    .slice(0,20);
+        [...A]
+        .sort(
+            (a,b) =>
+            b.id - a.id
+        )
+        .slice(
+            0,
+            20
+        );
 
 
     document
     .getElementById('bets')
     .innerHTML =
+        r.length
+        ?
+        r.map(
+            a => {
 
-    r.length
-
-    ? r.map(
-        a => {
-
-            let l =
-            profit(a);
+                let l =
+                    profit(a);
 
 
-            return `
-            <tr>
+                return `
+                <tr>
 
-                <td>
-                    ${br(a.data)}
-                </td>
+                    <td>
+                        ${br(a.data)}
+                    </td>
 
-                <td>
-                    ${esc(a.esporte)}
-                </td>
+                    <td>
+                        ${esc(a.esporte)}
+                    </td>
 
-                <td>
-                    ${esc(a.campeonato)}
-                </td>
+                    <td>
+                        ${esc(a.campeonato)}
+                    </td>
 
-                <td>
-                    ${esc(a.evento)}
-                </td>
+                    <td>
+                        ${esc(a.evento)}
+                    </td>
 
-                <td>
-                    ${esc(a.mercado)}
-                </td>
+                    <td>
+                        ${esc(a.mercado)}
+                    </td>
 
-                <td>
-                    ${n(a.odd)
-                    .toFixed(2)
-                    .replace('.',',')}
-                </td>
+                    <td>
+                        ${
+                            n(a.odd)
+                            .toFixed(2)
+                            .replace('.',',')
+                        }
+                    </td>
 
-                <td>
-                    ${money(a.stake)}
-                </td>
+                    <td>
+                        ${money(a.stake)}
+                    </td>
 
-                <td>
-                    ${badge(a.resultado)}
-                </td>
+                    <td>
+                        ${badge(a.resultado)}
+                    </td>
 
-                <td
-                    class="${
-                        settled(a)
-                        ? cls(l)
-                        : ''
-                    }"
-                >
-                    ${
-                        settled(a)
-                        ? (l > 0 ? '+ ' : '')
-                          + money(l)
-                        : '—'
-                    }
-                </td>
-
-                <td>
-
-                    <button
-                        class="edit"
-                        onclick="editBet(${a.id})"
+                    <td
+                        class="${
+                            settled(a)
+                            ? cls(l)
+                            : ''
+                        }"
                     >
-                        Editar
-                    </button>
 
-                </td>
+                        ${
+                            settled(a)
+                            ?
+                            (
+                                l > 0
+                                ? '+ '
+                                : ''
+                            )
+                            +
+                            money(l)
+                            :
+                            '—'
+                        }
 
-            </tr>
-            `;
-        }
-      ).join('')
+                    </td>
 
-    : `
+                    <td>
+
+                        <button
+                            class="edit"
+                            onclick="editBet(${a.id})"
+                        >
+                            Editar
+                        </button>
+
+                    </td>
+
+                </tr>
+                `;
+
+            }
+        )
+        .join('')
+        :
+        `
         <tr>
-
             <td
                 colspan="10"
                 class="empty"
             >
                 Nenhuma aposta cadastrada.
             </td>
-
         </tr>
-      `;
+        `;
+
 }
 
+
+
+/* =========================
+   MOVIMENTAÇÕES
+========================= */
 
 function movs(){
 
     let r =
-    [...M]
-    .sort(
-        (a,b) =>
-        b.id - a.id
-    )
-    .slice(0,10);
+        [...M]
+        .sort(
+            (a,b) =>
+            b.id - a.id
+        )
+        .slice(
+            0,
+            10
+        );
 
 
     document
     .getElementById('movs')
     .innerHTML =
+        r.length
+        ?
+        r.map(
+            x =>
+            `
+            <tr>
 
-    r.length
+                <td>
+                    ${br(x.data)}
+                </td>
 
-    ? r.map(
-        x => `
-        <tr>
+                <td>
+                    ${esc(x.tipo)}
+                </td>
 
-            <td>
-                ${br(x.data)}
-            </td>
+                <td
+                    class="${
+                        x.tipo === 'DEPOSITO'
+                        ? 'pos'
+                        : 'neg'
+                    }"
+                >
 
-            <td>
-                ${esc(x.tipo)}
-            </td>
+                    ${
+                        x.tipo === 'DEPOSITO'
+                        ? '+ '
+                        : '- '
+                    }
 
-            <td
-                class="${
-                    x.tipo === 'DEPOSITO'
-                    ? 'pos'
-                    : 'neg'
-                }"
-            >
-                ${
-                    x.tipo === 'DEPOSITO'
-                    ? '+ '
-                    : '- '
-                }
+                    ${money(x.valor)}
 
-                ${money(x.valor)}
-            </td>
+                </td>
 
-            <td>
-                ${esc(
-                    x.observacao || ''
-                )}
-            </td>
+                <td>
+                    ${esc(x.observacao || '')}
+                </td>
 
-        </tr>
+            </tr>
+            `
+        )
+        .join('')
+        :
         `
-      ).join('')
-
-    : `
         <tr>
 
             <td
@@ -1628,9 +1945,15 @@ function movs(){
             </td>
 
         </tr>
-      `;
+        `;
+
 }
 
+
+
+/* =========================
+   GRÁFICOS
+========================= */
 
 function charts(){
 
@@ -1644,18 +1967,27 @@ function charts(){
         ev.push({
 
             k:
-            (a.data || '')
-            + (a.hora || '')
-            + 'A'
-            + a.id,
+                (a.data || '')
+                +
+                (a.hora || '')
+                +
+                'A'
+                +
+                a.id,
 
             l:
-            br(a.data)
-            + ' • '
-            + a.resultado,
+                br(a.data)
+                +
+                ' • '
+                +
+                (
+                    a.resultado === 'VOID'
+                    ? 'DEVOLVIDA'
+                    : a.resultado
+                ),
 
             d:
-            profit(a)
+                profit(a)
 
         })
     );
@@ -1666,23 +1998,29 @@ function charts(){
         ev.push({
 
             k:
-            (x.data || '')
-            + (x.hora || '')
-            + 'M'
-            + x.id,
+                (x.data || '')
+                +
+                (x.hora || '')
+                +
+                'M'
+                +
+                x.id,
 
             l:
-            br(x.data)
-            + ' • '
-            + x.tipo,
+                br(x.data)
+                +
+                ' • '
+                +
+                x.tipo,
 
             d:
-            (
-                x.tipo === 'DEPOSITO'
-                ? 1
-                : -1
-            )
-            * n(x.valor)
+                (
+                    x.tipo === 'DEPOSITO'
+                    ? 1
+                    : -1
+                )
+                *
+                n(x.valor)
 
         })
     );
@@ -1697,10 +2035,10 @@ function charts(){
     let s = BANK;
 
     let lab =
-    ['Banca inicial'];
+        ['Banca inicial'];
 
     let dat =
-    [s];
+        [s];
 
 
     ev.forEach(
@@ -1715,18 +2053,26 @@ function charts(){
             dat.push(
                 +s.toFixed(2)
             );
+
         }
     );
 
 
     if(lc){
+
         lc.destroy();
+
     }
+
+
+    const lineCanvas =
+        document
+        .getElementById('line');
 
 
     lc =
     new Chart(
-        document.getElementById('line'),
+        lineCanvas,
         {
 
             type:'line',
@@ -1741,8 +2087,7 @@ function charts(){
 
                     borderColor:'#60a5fa',
 
-                    backgroundColor:
-                    '#60a5fa18',
+                    backgroundColor:'#60a5fa18',
 
                     fill:true,
 
@@ -1785,7 +2130,8 @@ function charts(){
                             color:'#94a3b8',
 
                             callback:
-                            v => money(v)
+                                v =>
+                                money(v)
 
                         }
 
@@ -1799,6 +2145,11 @@ function charts(){
     );
 
 
+
+    /* =====================
+       GREENS POR MERCADO
+    ===================== */
+
     let o = {};
 
 
@@ -1810,34 +2161,43 @@ function charts(){
     .forEach(
         a => {
 
-            let nome =
-            a.mercado
-            || 'Não informado';
+            let mercadoNome =
+                a.mercado
+                ||
+                'Não informado';
 
 
-            o[nome] =
-            (o[nome] || 0)
-            + 1;
+            o[mercadoNome] =
+                (o[mercadoNome] || 0)
+                +
+                1;
+
         }
     );
 
 
     let labels =
-    Object.keys(o);
+        Object.keys(o);
 
-
-    let data =
-    Object.values(o);
+    let dataPie =
+        Object.values(o);
 
 
     if(pc){
+
         pc.destroy();
+
     }
+
+
+    const pieCanvas =
+        document
+        .getElementById('pie');
 
 
     pc =
     new Chart(
-        document.getElementById('pie'),
+        pieCanvas,
         {
 
             type:'pie',
@@ -1845,32 +2205,36 @@ function charts(){
             data:{
 
                 labels:
-                labels.length
-                ? labels
-                : ['Sem greens'],
+                    labels.length
+                    ?
+                    labels
+                    :
+                    ['Sem greens'],
 
                 datasets:[{
 
                     data:
-                    data.length
-                    ? data
-                    : [1],
+                        dataPie.length
+                        ?
+                        dataPie
+                        :
+                        [1],
 
                     backgroundColor:
-                    labels.length
-
-                    ? [
-                        '#22c55e',
-                        '#60a5fa',
-                        '#a78bfa',
-                        '#f59e0b',
-                        '#14b8a6',
-                        '#f472b6'
-                      ]
-
-                    : [
-                        '#283449'
-                      ]
+                        labels.length
+                        ?
+                        [
+                            '#22c55e',
+                            '#60a5fa',
+                            '#a78bfa',
+                            '#f59e0b',
+                            '#14b8a6',
+                            '#f472b6'
+                        ]
+                        :
+                        [
+                            '#283449'
+                        ]
 
                 }]
 
@@ -1900,386 +2264,559 @@ function charts(){
 
         }
     );
+
+}
+
+
+
+/* =========================
+   MOSTRAR CAMPO CASHOUT
+========================= */
+
+function toggleCashout(){
+
+    const resultadoEl =
+        document
+        .getElementById('resultado');
+
+    const cashoutField =
+        document
+        .getElementById('cashoutField');
+
+    const retornoEl =
+        document
+        .getElementById('retorno_manual');
+
+
+    let on =
+        resultadoEl.value
+        ===
+        'CASHOUT';
+
+
+    cashoutField
+    .classList
+    .toggle(
+        'hidden',
+        !on
+    );
+
+
+    retornoEl.required =
+        on;
+
+
+    if(!on){
+
+        retornoEl.value = '';
+
+    }
+
 }
 
 
 document
-.getElementById('newBtn')
-.onclick =
-() => {
-
-    document
-    .getElementById('betForm')
-    .reset();
+.getElementById('resultado')
+.addEventListener(
+    'change',
+    toggleCashout
+);
 
 
-    document
-    .getElementById('bid')
-    .value = '';
 
-
-    document
-    .getElementById('data')
-    .value =
-    localDate();
-
-
-    document
-    .getElementById('hora')
-    .value =
-    localTime();
-
-
-    document
-    .getElementById('resultado')
-    .value =
-    'PENDENTE';
-
-
-    document
-    .getElementById('betTitle')
-    .textContent =
-    'Nova Aposta';
-
-
-    show(
-        'betModal'
-    );
-};
-
-
-window.editBet =
-id => {
-
-    let a =
-    A.find(
-        x =>
-        x.id === id
-    );
-
-
-    document
-    .getElementById('bid')
-    .value =
-    a.id;
-
-
-    document
-    .getElementById('data')
-    .value =
-    a.data || '';
-
-
-    document
-    .getElementById('hora')
-    .value =
-    (a.hora || '')
-    .slice(0,5);
-
-
-    document
-    .getElementById('esporte')
-    .value =
-    a.esporte || '';
-
-
-    document
-    .getElementById('campeonato')
-    .value =
-    a.campeonato || '';
-
-
-    document
-    .getElementById('evento')
-    .value =
-    a.evento || '';
-
-
-    document
-    .getElementById('mercado')
-    .value =
-    a.mercado || '';
-
-
-    document
-    .getElementById('odd')
-    .value =
-    a.odd;
-
-
-    document
-    .getElementById('stake')
-    .value =
-    a.stake;
-
-
-    document
-    .getElementById('resultado')
-    .value =
-    a.resultado;
-
-
-    document
-    .getElementById('obs')
-    .value =
-    a.observacao || '';
-
-
-    document
-    .getElementById('betTitle')
-    .textContent =
-    'Editar Aposta';
-
-
-    show(
-        'betModal'
-    );
-};
-
+/* =========================
+   NOVA APOSTA
+========================= */
 
 document
-.getElementById('betForm')
-.onsubmit =
-async e => {
+.getElementById('newBtn')
+.addEventListener(
+    'click',
+    () => {
 
-    e.preventDefault();
+        document
+        .getElementById('betForm')
+        .reset();
 
 
-    let v = {
+        document
+        .getElementById('bid')
+        .value = '';
 
-        data:
+
         document
         .getElementById('data')
-        .value,
+        .value =
+            localDate();
 
-        hora:
+
         document
         .getElementById('hora')
-        .value || null,
+        .value =
+            localTime();
 
-        esporte:
-        document
-        .getElementById('esporte')
-        .value
-        .trim(),
 
-        campeonato:
-        document
-        .getElementById('campeonato')
-        .value
-        .trim(),
-
-        evento:
-        document
-        .getElementById('evento')
-        .value
-        .trim(),
-
-        mercado:
-        document
-        .getElementById('mercado')
-        .value
-        .trim(),
-
-        odd:
-        n(
-            document
-            .getElementById('odd')
-            .value
-        ),
-
-        stake:
-        n(
-            document
-            .getElementById('stake')
-            .value
-        ),
-
-        resultado:
         document
         .getElementById('resultado')
-        .value,
+        .value =
+            'PENDENTE';
 
-        observacao:
+
         document
-        .getElementById('obs')
-        .value
-        .trim()
-        || null
-
-    };
+        .getElementById('retorno_manual')
+        .value =
+            '';
 
 
-    let id =
-    document
-    .getElementById('bid')
-    .value;
+        toggleCashout();
 
 
-    let q;
-
-
-    if(id){
-
-        q =
-        db
-        .from('apostas')
-        .update(v)
-        .eq('id',id);
-
-    }else{
-
-        q =
-        db
-        .from('apostas')
-        .insert(v);
-
-    }
-
-
-    let {
-        error
-    } =
-    await q;
-
-
-    if(error){
-
-        console.error(error);
-
-        return toast(
-            'Erro ao salvar aposta'
-        );
-    }
-
-
-    hide(
-        'betModal'
-    );
-
-
-    toast(
-        'Aposta salva!'
-    );
-
-
-    load();
-};
-
-
-document
-.getElementById('movBtn')
-.onclick =
-() => {
-
-    document
-    .getElementById('movForm')
-    .reset();
-
-
-    document
-    .getElementById('mdata')
-    .value =
-    localDate();
-
-
-    document
-    .getElementById('mhora')
-    .value =
-    localTime();
-
-
-    show(
-        'movModal'
-    );
-};
-
-
-document
-.getElementById('movForm')
-.onsubmit =
-async e => {
-
-    e.preventDefault();
-
-
-    let {
-        error
-    } =
-    await db
-    .from('movimentacoes')
-    .insert({
-
-        tipo:
         document
-        .getElementById('mtipo')
-        .value,
-
-        valor:
-        n(
-            document
-            .getElementById('mvalor')
-            .value
-        ),
-
-        data:
-        document
-        .getElementById('mdata')
-        .value,
-
-        hora:
-        document
-        .getElementById('mhora')
-        .value || null,
-
-        observacao:
-        document
-        .getElementById('mobs')
-        .value
-        .trim()
-        || null
-
-    });
+        .getElementById('betTitle')
+        .textContent =
+            'Nova Aposta';
 
 
-    if(error){
-
-        console.error(error);
-
-        return toast(
-            'Erro ao salvar movimentação'
-        );
-    }
-
-
-    hide(
-        'movModal'
-    );
-
-
-    toast(
-        'Movimentação salva!'
-    );
-
-
-    load();
-};
-
-
-document
-.querySelectorAll('[data-x]')
-.forEach(
-    x => {
-
-        x.onclick =
-        () =>
-        hide(
-            x.dataset.x
+        show(
+            'betModal'
         );
 
     }
 );
 
+
+
+/* =========================
+   EDITAR APOSTA
+========================= */
+
+window.editBet =
+function(id){
+
+    let a =
+        A.find(
+            x =>
+            x.id === id
+        );
+
+
+    if(!a){
+        return;
+    }
+
+
+    document
+    .getElementById('bid')
+    .value =
+        a.id;
+
+
+    document
+    .getElementById('data')
+    .value =
+        a.data || '';
+
+
+    document
+    .getElementById('hora')
+    .value =
+        (a.hora || '')
+        .slice(0,5);
+
+
+    document
+    .getElementById('esporte')
+    .value =
+        a.esporte || '';
+
+
+    document
+    .getElementById('campeonato')
+    .value =
+        a.campeonato || '';
+
+
+    document
+    .getElementById('evento')
+    .value =
+        a.evento || '';
+
+
+    document
+    .getElementById('mercado')
+    .value =
+        a.mercado || '';
+
+
+    document
+    .getElementById('odd')
+    .value =
+        a.odd;
+
+
+    document
+    .getElementById('stake')
+    .value =
+        a.stake;
+
+
+    /*
+    Compatibilidade com os
+    registros antigos VOID.
+    */
+
+    document
+    .getElementById('resultado')
+    .value =
+        a.resultado === 'VOID'
+        ?
+        'DEVOLVIDA'
+        :
+        a.resultado;
+
+
+    document
+    .getElementById('retorno_manual')
+    .value =
+        a.retorno_manual ?? '';
+
+
+    toggleCashout();
+
+
+    document
+    .getElementById('obs')
+    .value =
+        a.observacao || '';
+
+
+    document
+    .getElementById('betTitle')
+    .textContent =
+        'Editar Aposta';
+
+
+    show(
+        'betModal'
+    );
+
+};
+
+
+
+/* =========================
+   SALVAR APOSTA
+========================= */
+
+document
+.getElementById('betForm')
+.addEventListener(
+    'submit',
+    async e => {
+
+        e.preventDefault();
+
+
+        const resultadoValor =
+            document
+            .getElementById('resultado')
+            .value;
+
+
+        const retornoValor =
+            document
+            .getElementById('retorno_manual')
+            .value;
+
+
+        if(
+            resultadoValor === 'CASHOUT'
+            &&
+            retornoValor === ''
+        ){
+
+            return toast(
+                'Informe o valor recebido no cashout'
+            );
+
+        }
+
+
+        let v = {
+
+            data:
+                document
+                .getElementById('data')
+                .value,
+
+            hora:
+                document
+                .getElementById('hora')
+                .value
+                ||
+                null,
+
+            esporte:
+                document
+                .getElementById('esporte')
+                .value
+                .trim(),
+
+            campeonato:
+                document
+                .getElementById('campeonato')
+                .value
+                .trim(),
+
+            evento:
+                document
+                .getElementById('evento')
+                .value
+                .trim(),
+
+            mercado:
+                document
+                .getElementById('mercado')
+                .value
+                .trim(),
+
+            odd:
+                n(
+                    document
+                    .getElementById('odd')
+                    .value
+                ),
+
+            stake:
+                n(
+                    document
+                    .getElementById('stake')
+                    .value
+                ),
+
+            resultado:
+                resultadoValor,
+
+            retorno_manual:
+                resultadoValor === 'CASHOUT'
+                ?
+                n(retornoValor)
+                :
+                null,
+
+            observacao:
+                document
+                .getElementById('obs')
+                .value
+                .trim()
+                ||
+                null
+
+        };
+
+
+        const id =
+            document
+            .getElementById('bid')
+            .value;
+
+
+        let q;
+
+
+        if(id){
+
+            q =
+                db
+                .from('apostas')
+                .update(v)
+                .eq(
+                    'id',
+                    id
+                );
+
+        }
+        else{
+
+            q =
+                db
+                .from('apostas')
+                .insert(v);
+
+        }
+
+
+        const {error} =
+            await q;
+
+
+        if(error){
+
+            console.error(error);
+
+            return toast(
+                'Erro ao salvar aposta'
+            );
+
+        }
+
+
+        hide(
+            'betModal'
+        );
+
+
+        toast(
+            'Aposta salva!'
+        );
+
+
+        load();
+
+    }
+);
+
+
+
+/* =========================
+   MOVIMENTAR BANCA
+========================= */
+
+document
+.getElementById('movBtn')
+.addEventListener(
+    'click',
+    () => {
+
+        document
+        .getElementById('movForm')
+        .reset();
+
+
+        document
+        .getElementById('mdata')
+        .value =
+            localDate();
+
+
+        document
+        .getElementById('mhora')
+        .value =
+            localTime();
+
+
+        show(
+            'movModal'
+        );
+
+    }
+);
+
+
+
+/* =========================
+   SALVAR MOVIMENTAÇÃO
+========================= */
+
+document
+.getElementById('movForm')
+.addEventListener(
+    'submit',
+    async e => {
+
+        e.preventDefault();
+
+
+        let {error} =
+        await db
+        .from('movimentacoes')
+        .insert({
+
+            tipo:
+                document
+                .getElementById('mtipo')
+                .value,
+
+            valor:
+                n(
+                    document
+                    .getElementById('mvalor')
+                    .value
+                ),
+
+            data:
+                document
+                .getElementById('mdata')
+                .value,
+
+            hora:
+                document
+                .getElementById('mhora')
+                .value
+                ||
+                null,
+
+            observacao:
+                document
+                .getElementById('mobs')
+                .value
+                .trim()
+                ||
+                null
+
+        });
+
+
+        if(error){
+
+            console.error(error);
+
+            return toast(
+                'Erro ao salvar movimentação'
+            );
+
+        }
+
+
+        hide(
+            'movModal'
+        );
+
+
+        toast(
+            'Movimentação salva!'
+        );
+
+
+        load();
+
+    }
+);
+
+
+
+/* =========================
+   BOTÕES FECHAR/CANCELAR
+========================= */
+
+document
+.querySelectorAll('[data-x]')
+.forEach(
+    x =>
+    x.addEventListener(
+        'click',
+        () =>
+        hide(
+            x.dataset.x
+        )
+    )
+);
+
+
+
+/* =========================
+   INICIAR SISTEMA
+========================= */
 
 load();
 
